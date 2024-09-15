@@ -1,0 +1,26 @@
+services:
+  flask_app:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Dockerfile is now in the root directory
+    container_name: flask_app
+    ports:
+      - '5000:5000'
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+    restart: always
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+
+volumes:
+  mongo_data:
+    driver: local

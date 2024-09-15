@@ -1,0 +1,6 @@
+.venv
+.env
+./raw_data/
+.dockerignore
+docker-compose.yml
+Dockerfile

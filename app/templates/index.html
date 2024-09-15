@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload and Download</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 80%; margin: auto; }
+        .success { color: green; }
+        .error { color: red; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload an Image</h1>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <label for="image">Select image:</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+            <input type="submit" value="Generate Report">
+        </form>
+
+        <div id="responseMessage" class="success"></div>
+
+        <!-- Hidden by default, shown after successful upload -->
+        <div id="downloadSection" class="hidden">
+            <h2>Your DOCX File</h2>
+            <button id="downloadButton">Download DOCX</button>
+        </div>
+    </div>
+
+    <script>
+        let docxId = '';
+
+        // Handle the image upload
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent form from submitting normally
+            let formData = new FormData();
+            formData.append('image', document.getElementById('image').files[0]);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('responseMessage').innerText = data.error;
+                    document.getElementById('responseMessage').classList.add('error');
+                } else {
+                    docxId = data.docx_id;
+                    document.getElementById('responseMessage').innerText = 'Report generated successfully!';
+
+                    // Show the download button and bind the download functionality
+                    document.getElementById('downloadSection').classList.remove('hidden');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        // Handle download button click
+        document.getElementById('downloadButton').addEventListener('click', function() {
+            window.location.href = `/download/${docxId}`;
+        });
+    </script>
+</body>
+</html>
