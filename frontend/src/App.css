@@ -1,0 +1,30 @@
+.App {
+  text-align: center;
+  margin-top: 50px;
+}
+
+input {
+  margin-right: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #ccc;
+}
+
+p {
+  font-size: 16px;
+  color: green;
+}
+
+h1 {
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
